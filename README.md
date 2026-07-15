@@ -1,4 +1,4 @@
-# Bengaluru House Price Prediction System
+# STASHUP: A Bengaluru House Price Prediction System
 
 AIML Summer Internship 2026 — Capstone Project 2 (IIHMF, MNNIT Allahabad)
 
