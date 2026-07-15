@@ -6,4 +6,6 @@ scikit-learn
 xgboost
 joblib
 streamlit
+streamlit-option-menu
+plotly
 jupytext
