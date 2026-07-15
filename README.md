@@ -1,6 +1,6 @@
 # STASHUP: A Bengaluru House Price Prediction System
 
-AIML Summer Internship 2026 — (MNNIT Allahabad)
+🔗 **Live App**: [Click here to try it](https://kritikap2406-netizen-stashup-bengaluru--streamlit-appapp-k80y5b.streamlit.app)
 
 ## Dataset
 Real Bengaluru house listings, 13,320 rows: `area_type`, `availability`, `location`,
