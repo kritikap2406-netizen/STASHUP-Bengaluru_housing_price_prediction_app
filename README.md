@@ -1,85 +1,115 @@
-# STASHUP: A Bengaluru House Price Prediction System
+# 🏡 Bengaluru House Price Prediction
 
-🔗 **Live App**: [Click here to try it](https://kritikap2406-netizen-stashup-bengaluru--streamlit-appapp-k80y5b.streamlit.app)
+An ML-powered web app that estimates residential house prices in Bengaluru based on location, area, BHK, bathrooms, and more — built as part of the **AIML Summer Internship 2026 Capstone Project (IIHMF, MNNIT Allahabad)**.
 
-## Dataset
-Real Bengaluru house listings, 13,320 rows: `area_type`, `availability`, `location`,
-`size`, `society`, `total_sqft`, `bath`, `balcony`, `price` (in Lakh INR).
+🔗 **[Try the Live App →](https://kritikap2406-netizen-stashup-bengaluru--streamlit-appapp-k80y5b.streamlit.app)**
 
-## Folder Structure
+![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white)
+![scikit--learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white)
+![XGBoost](https://img.shields.io/badge/XGBoost-Model-016A70)
+![License](https://img.shields.io/badge/status-active-brightgreen)
+
+---
+
+## 📖 About
+
+This app predicts residential house prices in Bengaluru using a machine-learning model trained on ~13,300 real property listings. Enter a few property details — location, area type, BHK, bathrooms, square footage — and get an instant price estimate along with a confidence range, based on the model's typical prediction error.
+
+It also includes tools to explore the market: an analytics dashboard of average prices by location, a side-by-side property comparison tool, and a saved history of your past predictions.
+
+## ✨ Features
+
+- 🎯 **Price Prediction** — instant price estimate with a confidence band (± model MAE)
+- 📊 **Market Analytics** — top locations by average price, sqft-vs-price trends
+- ⚖️ **Compare Properties** — side-by-side prediction comparison for two configurations
+- 🕘 **Prediction History** — saved locally, with CSV export and trend charts
+- ✅ **Input Validation** — flags unrealistic inputs (e.g. too little sqft per bedroom)
+- 📥 **CSV Export** — download individual predictions or full history
+
+## 🖥️ Live Demo
+
+**[kritikap2406-netizen-stashup-bengaluru--streamlit-appapp-k80y5b.streamlit.app](https://kritikap2406-netizen-stashup-bengaluru--streamlit-appapp-k80y5b.streamlit.app)**
+
+## 🧠 Model
+
+Three algorithms were trained and evaluated on the same held-out test set:
+
+| Model | R² Score | MAE (₹ Lakh) | RMSE (₹ Lakh) | Verdict |
+| :--- | :---: | :---: | :---: | :--- |
+| Linear Regression | ~0.72 | ~25.4 | ~45.1 | Baseline, struggles with non-linear trends |
+| Random Forest | ~0.85 | ~19.8 | ~31.2 | Captures non-linear location patterns well |
+| **XGBoost** 🏆 | **~0.88** | **~18.5** | **~29.3** | **Best overall performance — used in production** |
+
+**Understanding the metrics:**
+- **R² Score** (higher is better) — how much price variance the model explains. XGBoost explains ~88% of it.
+- **MAE** (lower is better) — average prediction error in Lakhs. XGBoost is off by ~₹18.5 L on average.
+- **RMSE** (lower is better) — penalizes larger errors more heavily; higher than MAE here means the model occasionally misses more on extreme luxury properties, while staying accurate for typical listings.
+
+## 🛠️ Feature Engineering
+
+- **`bath_per_bhk`** — ratio of bathrooms to bedrooms, helping the model detect standard vs. luxury layouts
+- **`sqft_per_bhk`** — average space per bedroom, used to catch unrealistic or cramped listings
+- **`is_ready_to_move`** — binary flag from the "Ready to Move" input
+- **Reality checks** — flags inputs outside typical Bengaluru market ranges (e.g. <300 sqft/BHK, more bathrooms than bedrooms)
+- **Safety guard** — clamps any unrealistic negative/near-zero prediction to a ₹5 Lakh floor
+
+## 📊 Exploratory Data Analysis
+
+Univariate (price & sqft distributions), bivariate (price by area type, sqft vs. price by BHK), and a correlation heatmap — see [`Documentation/plots/`](Documentation/plots/).
+
+## 📁 Project Structure
+
 ```
 BengaluruHousePrediction/
 ├── Dataset/
-│   └── bengaluru_house_data.csv
+│   └── bengaluru_house_data.csv       # 13,320 real Bengaluru listings
 ├── Notebook/
-│   ├── bengaluru_pipeline.py
+│   ├── bengaluru_pipeline.py          # end-to-end training pipeline
 │   └── bengaluru_house_prediction.ipynb
 ├── Model/
-│   ├── bengaluru_price_model.pkl
+│   ├── bengaluru_price_model.pkl      # trained XGBoost model
 │   └── model_metadata.json
 ├── Streamlit_App/
-│   └── app.py
+│   └── app.py                         # the deployed web app
 ├── Documentation/
-│   ├── plots/                 # 6 EDA + comparison charts
+│   ├── plots/                         # EDA & model comparison charts
 │   └── model_comparison.csv
 ├── requirements.txt
 └── README.md
 ```
 
-## How to run
+## 🚀 Run It Locally
+
 ```bash
+# 1. Clone the repo
+git clone https://github.com/kritikap2406-netizen/STASHUP-Bengaluru_housing_price_prediction_app.git
+cd STASHUP-Bengaluru_housing_price_prediction_app
+
+# 2. Install dependencies
 pip install -r requirements.txt
+
+# 3. (Optional) Re-run the training pipeline
 cd Notebook && python bengaluru_pipeline.py && cd ..
+
+# 4. Launch the app
 cd Streamlit_App && streamlit run app.py
 ```
 
-## Phase-by-phase notes
+The app will open automatically in your browser at `http://localhost:8501`.
 
-**Phase 3 — Data Preprocessing**
+## 📦 Dataset
 
-## 🛠️ Data Processing
+Real Bengaluru house listings — 13,320 rows including `area_type`, `availability`, `location`, `size`, `society`, `total_sqft`, `bath`, `balcony`, and `price` (in ₹ Lakh).
 
-Before the machine learning model can estimate a house price, your inputs go through a quick and smart preparation phase. Here’s what happens behind the scenes:
+## 🧰 Tech Stack
 
-* **Feature Engineering:** Instead of just passing raw numbers to the model, the app automatically calculates two helpful ratios: **Bathrooms per BHK** (`bath_per_bhk`) and **Square Footage per BHK** (`sqft_per_bhk`). This helps the model understand the layout efficiency of the property.
-* **Categorical Formatting:** Text inputs like *Location* and *Area Type* are matched against the exact categories the model was trained on. The "Ready to Move" checkbox is converted into a binary format (1 or 0) so the model can process it.
-* **Reality Checks (Validation):** Before predicting, the app runs a sanity check on your inputs. If you enter something unusual for the Bengaluru market—like less than 300 sqft for a 3 BHK, or more bathrooms than bedrooms—the app flags a mild warning. This ensures you get alerted if your inputs fall outside typical real-world ranges. 
-* **Safety Guards:** If the model outputs an unrealistic negative or near-zero price due to extreme inputs, the app automatically clamps the minimum predicted value to ₹5 Lakh to keep the estimates sensible.
+Python · scikit-learn · XGBoost · Streamlit · Plotly · Pandas · Joblib
 
-**Phase 4 — EDA**
-Univariate (price, sqft histograms), bivariate (price by area type boxplot,
-sqft vs price scatter colored by BHK), and a correlation heatmap — see
-`Documentation/plots/`.
+## 📌 Disclaimer
 
-**Phase 5 
-## ⚙️ Feature Engineering
+Predicted prices are **statistical estimates** based on historical data, not official valuations. Market conditions, micro-locality factors, building age, and current demand can materially affect real prices. Always consult a licensed valuer for actual transactions.
 
-To help the model make smarter predictions, we automatically create a few new data points from your inputs:
+---
 
-* **`bath_per_bhk`**: Calculates the ratio of bathrooms to bedrooms. This helps the model gauge if the property has a standard or luxury layout.
-* **`sqft_per_bhk`**: Calculates the average space per bedroom. This is a crucial metric to identify cramped properties or overly spacious luxury homes.
-* **`is_ready_to_move`**: Converts the "Ready to Move" checkbox into a machine-readable format (1 for Yes, 0 for No).
-
-**Phase 6/7 — Models & Evaluation**
-
-## 📊 Model Evaluation
-
-We tested three different machine learning algorithms to find the best predictor for Bengaluru house prices. All models were evaluated on the same unseen test dataset.
-
-| Model | R² Score | MAE (₹ Lakh) | RMSE (₹ Lakh) | Verdict |
-| :--- | :---: | :---: | :---: | :--- |
-| **Linear Regression** | ~0.72 | ~25.4 | ~45.1 | Baseline model, struggles with complex non-linear trends |
-| **Random Forest** | ~0.85 | ~19.8 | ~31.2 | Good at capturing non-linear location patterns |
-| **XGBoost** 🏆 | ~0.88 | ~18.5 | ~29.3 | **Best overall performance** |
-
-### 💡 Understanding the Metrics
-* **R² Score (higher is better):** Represents how well the model explains price variations. XGBoost explains ~88% of the variance.
-* **MAE - Mean Absolute Error (lower is better):** The average error in Lakhs. On average, XGBoost predictions are off by ~₹18.5 Lakhs.
-* **RMSE - Root Mean Squared Error (lower is better):** Penalizes large errors. Since RMSE is higher than MAE, all models make a few larger mistakes on extreme luxury properties, but are highly accurate for standard apartments.
-
-
-
-**Phase 8 — Deployment**
-`Streamlit_App/app.py` takes location, area type, BHK, bathrooms, balconies,
-sqft, and ready-to-move status, and returns a live price prediction with the
-model's typical error margin shown alongside it.
+*Built as part of the AIML Summer Internship 2026 — Capstone Project 2, IIHMF, MNNIT Allahabad.*
