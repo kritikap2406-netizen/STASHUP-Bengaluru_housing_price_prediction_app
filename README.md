@@ -112,4 +112,4 @@ Predicted prices are **statistical estimates** based on historical data, not off
 
 ---
 
-*Built as part of the AIML Summer Internship 2026 — Capstone Project 2, IIHMF, MNNIT Allahabad.*
+**Built as part of the AIML Summer Internship 2026 — Capstone Project 2, IIHMF, MNNIT Allahabad.**
