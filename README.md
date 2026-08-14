@@ -1,4 +1,4 @@
-# 🏡 STASHUP : A Bengaluru House Price Prediction Project
+# 🏡 STASHUP : A Bengaluru House Price Prediction Project using ML
 
 An ML-powered web app that estimates residential house prices in Bengaluru based on location, area, BHK, bathrooms, and more — built as part of the **AIML Summer Internship 2026 Capstone Project (IIHMF, MNNIT Allahabad)**.
 
