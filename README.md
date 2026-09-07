@@ -1,6 +1,6 @@
 # 🏡 STASHUP : A Bengaluru House Price Prediction Project using Machine Learning 
 
-An ML-powered web app that estimates residential house prices in Bengaluru based on location, area, BHK, bathrooms, and more — built as part of the **AIML Summer Internship 2026 Capstone Project (IIHMF, MNNIT Allahabad)**.
+An ML-powered web app that estimates residential house prices in Bengaluru based on location, area, BHK, bathrooms, and more — built as part of the **AIML Summer Internship 2026 Capstone Project ( IIHMF, MNNIT Allahabad )**.
 
 🔗 **[Try the Live App →](https://kritikap2406-netizen-stashup-bengaluru--streamlit-appapp-k80y5b.streamlit.app)**
 
